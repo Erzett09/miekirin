@@ -1,0 +1,223 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.main-section {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1.20fr 1fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    align-items: start;
+}
+
+.container-text h2 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 4rem;
+}
+
+.container-text p {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.20rem;
+}
+
+.container-text .check-menu-button {
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 2rem;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #ffff;
+    border-radius: 4rem;
+    font-size: 1.50rem;
+    cursor: pointer;
+    background: linear-gradient(120deg,rgb(255, 203, 107),rgb(255, 177, 31),rgb(255, 166, 0),orange);
+    background-size: 400px 400px;
+    transition: all .3s ease-in-out;
+}
+
+.container-text .check-menu-button:hover {
+    background-position: 50% 50%;
+}
+
+.menu-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 120vh;
+    background: linear-gradient(150deg,rgb(255, 203, 107),rgb(255, 177, 31),rgb(255, 201, 101),rgb(255, 186, 57));
+}
+
+.wrapper-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.wrapper-menu h2 {
+    color: #fff;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 2.2rem;
+}
+
+.wrapper-menu table {
+    width: 100%;
+  max-width: 600px;         /* Batasi lebar maksimal agar tidak terlalu melar */
+  border-collapse: collapse; /* Menghilangkan spasi ganda antar border/garis */
+  font-family: sans-serif;
+  background-color: #ffffff; /* Beri background putih supaya kontras dengan latar kuning */
+  border-radius: 8px;        /* Membuat sudut tabel melengkung */
+  overflow: hidden;          /* Memastikan lengkungan sudut memotong isi header */
+  box-shadow: 5px 4px 15px 5px rgba(0, 0, 0, 0.1); /* Memberikan efek bayangan halus */
+  margin: 20px auto;
+}
+
+table thead tr th {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffff;
+    
+}
+
+table thead tr {
+    background: #000000;
+    text-align: left;
+    font-weight: bold;
+}
+
+table th, table td {
+    padding: 12px 15px;
+}
+
+.container-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.container-chef {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.2rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.chef {
+    width: 500px;
+    height: 550px;
+    background: #ffff;
+    border-radius: 50%;
+}
+
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(160deg,rgb(255, 255, 255),rgb(255, 255, 255),rgb(249, 255, 255),rgb(255, 255, 255));
+}
+
+.wrapper-contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.wrapper-contact .contact-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.wrapper-contact .contact-information {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 100%;   
+}
+
+.img {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    box-shadow: 4px 5px 5px 6px rgba(0, 0, 0, 0.2);
+}
+
+.contact-section > h2 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-bottom: 5rem;
+    font-size: 3rem;
+    /* border-bottom: 2px solid rgb(255, 202, 69); */
+}
+
+.contact-information h2 {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 4rem;
+    width: 20rem;
+    padding: 0.50rem 0;
+    border-bottom: 2px solid black;
+}
+
+.contact-information p {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.3rem;
+}
+
+.contact-information .button-contact {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    color: #fff;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background: linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.2),rgba(0,0,0,0.5));
+    padding: 1.50rem 0;
+    border-radius: 5rem;
+    font-size: 1.30rem;
+    box-shadow: 4px 5px 5px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.contact-information .button-contact:hover {
+    scale: 1.04;
+}
