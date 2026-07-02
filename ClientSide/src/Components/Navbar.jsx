@@ -52,7 +52,7 @@ export default function Navbar() {
                 ) : (
                     <>
                     <div className="register-button" onClick={() => {window.location.href = '/register'}}>Register</div>
-                    <div className="login-button">Login</div>
+                    <div className="login-button" onClick={() => {window.location.href = '/login'}}>Login</div>
                 </>
                 )}
             </div>

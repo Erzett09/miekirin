@@ -91,4 +91,5 @@
     background: linear-gradient(100deg,rgb(57, 234, 57),rgb(59, 245, 59),rgb(54, 227, 54),lime);
     padding: 1rem 5em;
     border-radius: 5rem;
+    cursor: pointer;
 }

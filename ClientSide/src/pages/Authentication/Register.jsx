@@ -1,10 +1,41 @@
 
 import '../../assets/css/register.css'
 import Navbar from '../../Components/Navbar'
-
+import { Register } from '../../config/services'
+import Modal from '../../Components/Modal';
+import { useState, useEffect, } from 'react';
 export default function RegisterPage() {
+    const [modal,setModal] = useState(false)
+    const [title,setTitle] = useState('')
+    const [content,setContent] = useState('')
+    const HandleRegister = async () => {
+    
+        try {
+            const data = await Register({
+                username: document.getElementById('username').value,
+                email : document.getElementById('email').value,
+                password : document.getElementById('password').value
+            })
+
+            localStorage.setItem('token',data.token)
+            localStorage.setItem('user',JSON.stringify(data.data))
+
+            setModal(true)
+            setTitle(data.status)
+            setContent(data.message)
+        } catch (error) {
+                setModal(true)
+                setTitle(error.response.data.status)
+                setContent(error.response.data.message)
+            }
+        };
+    
     return (
         <>
+        {modal && (
+            <Modal setModal={setModal} title={title} content={content}/>
+        )}
+    
             <div className="container-register">
                 <div className="wrapper-register">
                     <div className="policy">
@@ -41,7 +72,7 @@ export default function RegisterPage() {
                                 <input type="password" id="password" name="password" placeholder='kata sandi'/>
                             </div>
 
-                            <div className="submit-button">Daftar sekarang</div>
+                            <div className="submit-button" onClick={() => {HandleRegister()}}>Daftar sekarang</div>
                         </form>
                     </div>
                 </div>
