@@ -2,14 +2,16 @@ import '../../assets/css/login.css';
 import LoginLogo from '../../assets/images/logo-loginn.png';
 import Notification from '../../Components/Notification';
 import { Login } from '../../config/services';
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 // import Notification from '../../Components/Notification';
 
 export default function LoginPage() {
   const [notification, setNotification] = useState(null);
-
+  const submitButtonRef = useRef(null);
   const HandleLogin = async (e) => {
     e.preventDefault();
+    submitButtonRef.current.disabled = true;
+    submitButtonRef.current.innerHTML = 'Loading...';
     try {
       const data = {
         email : document.getElementById('email').value,
@@ -19,11 +21,26 @@ export default function LoginPage() {
       setNotification({
         Logo : 'success',
         message : result.data.message})
+        localStorage.setItem('auth_token',result.token)
+        localStorage.setItem('user',JSON.stringify(result.data))
+        submitButtonRef.current.disabled = false;
+        submitButtonRef.current.innerHTML = 'Masuk';
+        window.location.href = '/dashboard';
+        setTimeout(() => {
+          setNotification(null)
+        })
     } catch (error) {
       setNotification({
         Logo : 'error',
         message : error.response.data.message
       })
+
+      submitButtonRef.current.disabled = false;
+      submitButtonRef.current.innerHTML = 'Masuk';
+
+      setTimeout(() => {
+        setNotification(null)
+      }, 2400)
     }
   }
 
@@ -32,7 +49,7 @@ export default function LoginPage() {
     <div className="container-login">
     {notification && (
       <Notification logo={notification.Logo} message={notification.message}/>
-    )}
+    )}  
         <div className="circle">Miekirin</div>
       <div className="wrapper-image">
         <img src={LoginLogo} alt="Login Logo" className="logo" />
@@ -63,7 +80,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <button type="submit" className="submit-button">
+            <button ref={submitButtonRef} type="submit" className="submit-button">
               Masuk
             </button>
           </form>

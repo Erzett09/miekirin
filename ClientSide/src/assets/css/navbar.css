@@ -8,6 +8,7 @@ header {
     position: fixed;
     top: 0;
     background: #ffff;
+    z-index: 9999999;
 }
 
 .wrapper-navbar {
@@ -75,4 +76,38 @@ nav ul li a {
     color: aliceblue;
     padding: 1rem;
     cursor: pointer;
+}
+
+.account {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 13px;
+}
+
+.account ul {
+    position: absolute;
+    display: none;
+    background: rgb(249, 249, 249);
+    top: 100%;
+    list-style-type: none;
+    right: 0;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.account ul li {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #000000;
+    text-shadow: 3px 3px 3px 3px rgb(0, 0, 0,2);
+    font-size: 1.2rem;
+    /* border-top: 1px solid black; */
+    cursor: pointer;
+}
+
+.account ul li:hover {
+    background: rgb(172, 172, 172);
+}
+
+.account:hover ul {
+    display: block;
 }

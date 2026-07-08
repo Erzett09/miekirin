@@ -2,7 +2,10 @@ import { useState,useEffect } from "react"
 import '../assets/css/navbar.css'
 import { useContext } from "react"
 import { mainMenu } from "../pages/landingPage"
+import {useNavigate} from 'react-router-dom'
+
 export default function Navbar() {
+    const navigation = useNavigate()
     const [Login,setLogin] = useState(false)
     const {SectionMainRef} = useContext(mainMenu)
     useEffect(() => {
@@ -48,7 +51,12 @@ export default function Navbar() {
 
             <div className="container-account">
                 {Login ? (
-                    <div className="account">🤵</div>
+                    <div className="account">🤵
+                    <ul>
+                        <li>Akun saya</li>
+                        <li onClick={() => navigation('/dashboard')}>Dashboard</li>
+                    </ul>
+                    </div>
                 ) : (
                     <>
                     <div className="register-button" onClick={() => {window.location.href = '/register'}}>Register</div>
