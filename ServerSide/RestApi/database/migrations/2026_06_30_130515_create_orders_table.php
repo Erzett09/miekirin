@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('code')->unique();   
+            $table->unsignedBigInteger('total');
+            $table->enum('payment_method',['bank','qris','cash']);
+            $table->enum('payment_status',['pending','paid','rejected'])->default('pending');
+            $table->enum('order_status',['pending','process','finished'])->default('pending');
             $table->timestamps();
         });
     }

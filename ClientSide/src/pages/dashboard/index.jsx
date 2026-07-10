@@ -7,6 +7,7 @@ import {useNavigate} from 'react-router-dom'
 import Notification from "../../Components/Notification"
 import MiekirinPedasNikmat from '../../assets/images/miekirin_pedas_nikmat.jpg'
 import MiekirinAyamGeprek from '../../assets/images/miekirin-ayam-geprek.jpg'
+import LoadingCard from "../../Components/LoadingCard"
 
 export default function Dashboard() {
     const navigate = useNavigate()
@@ -23,6 +24,8 @@ export default function Dashboard() {
             }
 
             if(token) {
+
+
 
                 try {
 
@@ -55,6 +58,8 @@ export default function Dashboard() {
                         localStorage.removeItem('user')
                         navigate('/login')
                     }
+                } finally {
+                    setLoadingCard(false)
                 }
 
 
@@ -70,6 +75,10 @@ export default function Dashboard() {
     const [sidebar,setSidebar] = useState(true)
     const [cartmenu,setCartMenu] = useState(false)
     const [cart,setCart] = useState([])
+    const [checkoutMenu,setCheckoutMenu] = useState(false)
+    const [total,setTotal] = useState(0)
+    const totalRef = useRef(null)
+    const [loadingCard,setLoadingCard] = useState(true)
     
 
     const [notifications, setNotifications] = useState([]);
@@ -127,7 +136,7 @@ export default function Dashboard() {
 
             if(item.quantity > 0    ) {
                 return {
-                    ...item,quantity: item.quantity --
+                    ...item,quantity: item.quantity -1
                 }
             }
 
@@ -139,17 +148,60 @@ export default function Dashboard() {
         setCart(prev => prev.flatMap((item,i) => {
             if(i !== index) return item;
 
-            return {...item,quantity:item.quantity++}
+            return {...item,quantity:item.quantity+1}
         }))
     }
 
-    function checkOut() {}
+    function totalOrder() {
+        const total = cart.reduce((sum,item) => {
+            return sum + (item.price * item.quantity)
+        },0) 
+        
+        setTotal(total)
+    }
+
+    function checkOut() {
+        if(cart.length === 0) {
+            return showNotification('Keranjang tidak boleh kosong','warning')
+        }
+
+        setCheckoutMenu(!checkoutMenu)
+        totalOrder()
+    }
 
 
 
     return (
         <>
             <div className={style.dashboard}>
+
+                <div className={`${style.containerCheckout} ${checkoutMenu ? style.open : style.closed}`}>
+                        <div className={style.wrapperCheckOut}>
+                            <i style={{ display:'flex', justifyContent:'end', width:'100%',cursor:'pointer', fontStyle:'normal',fontSize:'1.2rem', fontFamily:'sans-serif,bold' }} onClick={() => (setCheckoutMenu(!checkoutMenu))}>X</i>
+                            <h1>Barang anda</h1>
+                            <div className={style.wrapperItems}>
+                                <ul>
+                                    {cart.map(item => {
+                                        return <div className={style.item}>
+                                            <div className={style.itemName}>
+                                                - {item.name}<br/>
+                                                <i className={style.itemPrice}>harga : {item.price}</i>
+                                            </div>
+
+                                            <div className={style.itemQty}>
+                                                {item.quantity}
+                                            </div>
+                                        </div>
+                                    })}
+                                </ul>
+                            </div>
+
+                            <div className={style.containerTotal}>
+                                <h3 ref={totalRef}>Total : {total.toLocaleString('id-ID')}</h3>
+                            </div>
+                        </div>
+                </div>
+
                 <div className={style.notificationContainer}>
                     {notifications.map(notif => (
                     <div key={notif.id} className={`${style.notification} ${style[notif.type]}`}>
@@ -195,36 +247,47 @@ export default function Dashboard() {
                     
                     <div className={style['container-menu']}>
 
-                        {products.map((item,index) => {
-                            return (
+                        {
+                            loadingCard ? (
+                                <>
+                                    {Array.from({length:8}).map((_,i) => {
+                                        <LoadingCard key={i}/>
+                                    })}
+                                </>
+                            ) : products.length !== 0 ? (
+                                products.map((item,index) => (
+                                    
 
-                                <div className={style['wrapper-card']}>
-                            <div className={style['card-image']}>
-                                <img src={item.image} alt="Card Image"/>
-                                {console.log(item.image)}
-                            </div>
+                                <div key={item.id} className={style['wrapper-card']}>
+                                    <div className={style['card-image']}>
+                                    <img src={item.image} alt="Card Image"/>
+                                    {console.log(item.image)}
+                                </div>
 
-                            <div className={style['card-title']}>
-                                <h3>{item.name}</h3>
-                            </div>
+                                <div className={style['card-title']}>
+                                    <h3>{item.name}</h3>
+                                </div>
 
-                            <div className={style['card-description']}>
-                                {item.description}
-                            </div>
+                                <div className={style['card-description']}>
+                                    {item.description}
+                                </div>
 
-                            <div className={style.cardPrice}>
-                                {item.price}
-                            </div>
+                                <div className={style.cardPrice}>
+                                    {item.price}
+                                </div>
 
-                            <div className={style['card-footer']}>
-                                <button className={style['add-to-cart-button']}
-                                onClick={() => {addToCart(index)}}
-                                >masukan ke keranjang</button>
-                                <button className={style['order-button']}>pesan</button>
-                            </div>
+                                <div className={style['card-footer']}>
+                                    <button className={style['add-to-cart-button']}
+                                    onClick={() => {addToCart(index)}}
+                                    >masukan ke keranjang</button>
+                                    <button className={style['order-button']}>pesan</button>
+                                </div>
                         </div>
-                            )
-                        })}
+                                ))
+                            ) : (<h2>Gagal memuat produk.</h2>)
+                        }
+
+                        
 
                         {/* <div className={style['wrapper-card']}>
                             <div className={style['card-image']}>
@@ -318,7 +381,7 @@ export default function Dashboard() {
                     </div>
                         </div>
 
-                        <div className={style.orderButton}>
+                        <div className={style.orderButton} onClick={() => checkOut()}>
                             Pesan sekarang
                         </div>
                 </div>
