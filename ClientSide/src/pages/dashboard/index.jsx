@@ -13,6 +13,7 @@ export default function Dashboard() {
     const [user,setUser] = useState({})
     const loadingName = useRef(null)
     const [products,setProducts] = useState([])
+    const [showCheckout,setShowCheckout] = useState(false)
     useEffect(() => {
         const CheckAuthenthication = async () => {
             console.log(cart)
@@ -143,7 +144,13 @@ export default function Dashboard() {
         }))
     }
 
-    function checkOut() {}
+    function checkOut() {
+        if(cart.length === 0) {
+            return showNotification('Keranjang tidak boleh kosong','warning')
+        }
+
+    setShowCheckout(!showCheckout)
+    }
 
 
 
@@ -157,6 +164,45 @@ export default function Dashboard() {
                 </div>
     ))}
             </div>
+
+            {showCheckout && (
+
+                
+                <div className={style.containerCheckOut}>
+                    <div className={style.wrapperCheckout}>
+                        <b className={style.closeButton} onClick={() => setShowCheckout(!showCheckout)}>X</b>
+                        <h1>Barang Anda</h1>
+                         {cart.map((item,i) => {
+                               return (
+                                    <div className={style.cardCheckout}>
+
+                            <div className={style.cardCheckOutImage}>
+                                <img alt="product image" src={item.image} className={style.productImg}/>
+                            </div>
+                            <div className={style.cardProductInfo}>
+                                <h3>{item.name}</h3>
+                                <i>
+                                    {item.price}
+                                </i>
+                            </div>
+                            <div className={style.cardProductQty}>
+                                x {item.quantity}
+                            </div>
+                        </div>
+                               ) 
+                            })}
+                        
+
+                        <div className={style.wrapperTotalCheckout}>
+                            <b>TOTAL : 20000</b>
+                            <div className={style.payButton}>
+                                Pesan dan Bayar Sekarang
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                )}
+
                 <div className={`${style.sidebar} ${sidebar ? style.active : style.closed}`}>
                     <h2 className={style['toggle-button']} onClick={() => setSidebar(!sidebar)}>⬅️</h2>
                     <h2>{user?.name}</h2>
@@ -318,7 +364,7 @@ export default function Dashboard() {
                     </div>
                         </div>
 
-                        <div className={style.orderButton}>
+                        <div className={style.orderButton} onClick={() => {checkOut()}}>
                             Pesan sekarang
                         </div>
                 </div>
