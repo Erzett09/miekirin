@@ -1,5 +1,5 @@
 
-import { useState,useRef, useEffect } from "react"
+import { useState,useRef, useEffect, useContext } from "react"
 import style from  '../../assets/css/dashboard/main.module.css'
 import Miekirin from '../../assets/images/chickennoodle.png'
 import axios from "axios"
@@ -7,6 +7,12 @@ import {useNavigate} from 'react-router-dom'
 import Notification from "../../Components/Notification"
 import MiekirinPedasNikmat from '../../assets/images/miekirin_pedas_nikmat.jpg'
 import MiekirinAyamGeprek from '../../assets/images/miekirin-ayam-geprek.jpg'
+import BRI from '../../assets/images/bri.svg'
+import Dana from '../../assets/images/dana.svg'
+import COD from '../../assets/images/cod.svg'
+import qris from '../../assets/images/qr.svg'
+import LoadingCard from "../../Components/LoadingCard"
+import QrisPayment from "../../Components/PaymentQris"
 
 export default function Dashboard() {
     const navigate = useNavigate()
@@ -74,6 +80,7 @@ export default function Dashboard() {
     
 
     const [notifications, setNotifications] = useState([]);
+    const [total,setTotal] = useState(0)
 
 
     function addToCart(index) {
@@ -152,6 +159,76 @@ export default function Dashboard() {
     setShowCheckout(!showCheckout)
     }
 
+    function sumTotal() {
+        return cart.reduce((total,item) => {
+            return total + item.price * item.quantity
+
+            
+        },0)
+    }
+
+    const [paymentList,setPaymentList] = useState(
+        [
+        {
+            name : 'Bayar di Tempat',
+            logo : COD,
+            choose : false
+        },
+        {
+            name : 'Dana',
+            logo : Dana,
+            choose : false
+        },
+        {
+            name : 'Qris',
+            logo : qris,
+            choose : false
+        },
+        {
+            name : 'BRI',
+            logo : BRI,
+            choose : false
+        }
+    ]
+    )
+
+    function choosePaymentMethod(item) {
+        setPaymentList(prev => 
+            prev.map(select => ({
+                ...select,choose : select.name === item.name
+            }))
+        )
+        // console.log('success')
+        
+    }
+
+    const [payMethod,setPayMethod] = useState('')
+    const [qrisPayment,setQrisPayment] = useState(false)
+
+    function Pay() {
+        paymentList.map((item) => {
+            if(item.choose) {
+                setPayMethod(item)
+                
+                if (item.name === 'Bayar di Tempat') {
+                    // Logic here
+                }
+
+                if (item.name === 'Dana') {
+                    // Logic here
+                }
+
+                if (item.name  === 'Qris') {
+                    setQrisPayment(true)
+                }
+
+                if(item.name === 'BRI') {
+                    // Logic here
+                }
+            }
+        })
+    }
+
 
 
     return (
@@ -165,6 +242,10 @@ export default function Dashboard() {
     ))}
             </div>
 
+            {qrisPayment && (
+                <QrisPayment link='https://youtube.com'/>
+            )}
+
             {showCheckout && (
 
                 
@@ -172,8 +253,8 @@ export default function Dashboard() {
                     <div className={style.wrapperCheckout}>
                         <b className={style.closeButton} onClick={() => setShowCheckout(!showCheckout)}>X</b>
                         <h1>Barang Anda</h1>
-                         {cart.map((item,i) => {
-                               return (
+                        {cart.map((item,i) => {
+                            return (
                                     <div className={style.cardCheckout}>
 
                             <div className={style.cardCheckOutImage}>
@@ -189,13 +270,37 @@ export default function Dashboard() {
                                 x {item.quantity}
                             </div>
                         </div>
-                               ) 
+                            ) 
                             })}
                         
 
                         <div className={style.wrapperTotalCheckout}>
-                            <b>TOTAL : 20000</b>
-                            <div className={style.payButton}>
+
+                            <h2 className={style.coolText}>Metode Pembayaran</h2>
+                            <div className={style.paymentContainer}>
+
+                                {
+                                    paymentList.map((item) => {
+                                        return (
+
+                                <div className={`${style.paymentItem} ${item.choose && style.choosePayment}`} onClick={() => {choosePaymentMethod(item)}}>
+                                    <img src={item.logo} className={style.paymentLogo}/>
+                                    <span>{item.name}</span>
+                                </div>
+                                        )
+                                    })
+                                }
+
+                            </div>
+
+                            <b>TOTAL : {
+                                    new Intl.NumberFormat('id-ID',{
+                                        style : 'currency',
+                                        currency : 'IDR'
+                                    }).format(sumTotal())
+                                }
+                            </b>
+                            <div className={style.payButton} onClick={() => Pay()}>
                                 Pesan dan Bayar Sekarang
                             </div>
                         </div>
@@ -241,7 +346,10 @@ export default function Dashboard() {
                     
                     <div className={style['container-menu']}>
 
-                        {products.map((item,index) => {
+                        {
+                            products ?
+                            
+                        products.map((item,index) => {
                             return (
 
                                 <div className={style['wrapper-card']}>
@@ -270,7 +378,7 @@ export default function Dashboard() {
                             </div>
                         </div>
                             )
-                        })}
+                        }) : <LoadingCard/>}
 
                         {/* <div className={style['wrapper-card']}>
                             <div className={style['card-image']}>

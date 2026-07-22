@@ -1,0 +1,37 @@
+.containerQris {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 9999999;
+}
+
+.containerQris .qrisPayment {
+    padding: 1rem;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    gap: 1rem;
+    border-radius: 1rem;
+}
+
+.containerQris .qrisPayment h2 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.containerQris .qrisPayment button {
+    padding: 1rem 4rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.5rem;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
