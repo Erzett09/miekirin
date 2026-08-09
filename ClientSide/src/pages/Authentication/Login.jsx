@@ -21,8 +21,8 @@ export default function LoginPage() {
       setNotification({
         Logo : 'success',
         message : result.data.message})
-        localStorage.setItem('auth_token',result.token)
-        localStorage.setItem('user',JSON.stringify(result.data))
+        document.cookie = `auth_token=${result.token}; max-age=3600; path=/`;
+        localStorage.setItem('user', JSON.stringify(result.data))
         submitButtonRef.current.disabled = false;
         submitButtonRef.current.innerHTML = 'Masuk';
         window.location.href = '/dashboard';

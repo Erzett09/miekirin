@@ -3,17 +3,19 @@ import '../assets/css/navbar.css'
 import { useContext } from "react"
 import { mainMenu } from "../pages/landingPage"
 import {useNavigate} from 'react-router-dom'
+import AccountSettingSvg from '../assets/images/icons/account-setting.svg'
 
 export default function Navbar() {
     const navigation = useNavigate()
     const [Login,setLogin] = useState(false)
     const {SectionMainRef} = useContext(mainMenu)
     useEffect(() => {
-        const auth_token = localStorage.getItem('auth_token')
+        
+        if(document.cookie.split(';').some((item) => item.trim().startsWith('auth_token='))) {
+            setLogin(true)
+        }
 
-        if(!auth_token) return;
 
-        setLogin(true)
     },[])
 
 
@@ -51,7 +53,7 @@ export default function Navbar() {
 
             <div className="container-account">
                 {Login ? (
-                    <div className="account">🤵
+                    <div className="account"><img src={AccountSettingSvg} alt="account setting icon" className="icon-setting" width={50} height={50}/>
                     <ul>
                         <li>Akun saya</li>
                         <li onClick={() => navigation('/dashboard')}>Dashboard</li>

@@ -20,3 +20,5 @@ use App\Http\Middleware\CheckToken;
 
     Route::get('/products',[ProductController::class,'index'])
         ->middleware('auth:sanctum');
+
+    Route::post('/order/post',[ProductController::class,'PostOrder']);

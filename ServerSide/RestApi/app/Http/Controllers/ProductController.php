@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,5 +20,18 @@ class ProductController extends Controller
         ],200);
     }
 
-    
+    public function PostOrder(Request $request) {
+        $user = $request->user('api');
+        $userId = $user->id;
+        $items = $request->input('items');
+
+        $order = new Order();
+        $order->payment($userId,$items);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Order berhasil dibuat',
+            'data' => $order
+        ],201);
+    }
 }

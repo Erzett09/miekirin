@@ -13,19 +13,23 @@ import COD from '../../assets/images/cod.svg'
 import qris from '../../assets/images/qr.svg'
 import LoadingCard from "../../Components/LoadingCard"
 import QrisPayment from "../../Components/PaymentQris"
+import { GetCookie } from "../../config/cookie"
+import { PostOrder } from "../../config/services"
 
 export default function Dashboard() {
     const navigate = useNavigate()
     const [user,setUser] = useState({})
     const loadingName = useRef(null)
+    const [cookie,setCookie] = useState(GetCookie('auth_token'))
     const [products,setProducts] = useState([])
     const [showCheckout,setShowCheckout] = useState(false)
     useEffect(() => {
+        console.log('cookie',cookie)
         const CheckAuthenthication = async () => {
             console.log(cart)
-            const token = localStorage.getItem('auth_token')
+            const token = GetCookie('auth_token')
 
-            if(!token) {
+            if(cookie === null) {
                 return window.location.href = '/login'
             }
 
@@ -36,7 +40,7 @@ export default function Dashboard() {
                     const productResponse = await axios.get('http://127.0.0.1:8000/api/products',
                         {
                             headers : {
-                                Authorization : `Bearer ${token}`
+                                Authorization : `Bearer ${cookie}`
                             }
                         }
                     )
@@ -170,7 +174,7 @@ export default function Dashboard() {
     const [paymentList,setPaymentList] = useState(
         [
         {
-            name : 'Bayar di Tempat',
+            name : 'Bayar di Kasir',
             logo : COD,
             choose : false
         },
@@ -210,8 +214,18 @@ export default function Dashboard() {
             if(item.choose) {
                 setPayMethod(item)
                 
-                if (item.name === 'Bayar di Tempat') {
-                    // Logic here
+                if (item.name === 'Bayar di Kasir') {
+                    PostOrder({
+                        user_id : user.id,
+                        items : cart.map(item => ({
+                            product_id : item.id,
+                            product_name : item.name,
+                            product_price : item.price,
+                            product_description : item.description,
+                            product_quantity : item.quantity,
+                            
+                        }))
+                    })
                 }
 
                 if (item.name === 'Dana') {
@@ -228,7 +242,6 @@ export default function Dashboard() {
             }
         })
     }
-
 
 
     return (
