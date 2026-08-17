@@ -209,13 +209,17 @@ export default function Dashboard() {
     const [payMethod,setPayMethod] = useState('')
     const [qrisPayment,setQrisPayment] = useState(false)
 
-    function Pay() {
-        paymentList.map((item) => {
-            if(item.choose) {
-                setPayMethod(item)
-                
-                if (item.name === 'Bayar di Kasir') {
-                    PostOrder({
+    async function Pay() {
+        const paymentMethodChoose = paymentList.find(item => item.choose);
+
+        if (!paymentMethodChoose) {
+            return showNotification('Pilih metode pembayaran','warning');
+        }
+
+        setPayMethod(paymentMethodChoose);
+
+                if (paymentMethodChoose.name === 'Bayar di Kasir') {
+                    const order = await PostOrder({
                         user_id : user.id,
                         items : cart.map(item => ({
                             product_id : item.id,
@@ -223,25 +227,32 @@ export default function Dashboard() {
                             product_price : item.price,
                             product_description : item.description,
                             product_quantity : item.quantity,
-                            
                         }))
-                    })
+                    });
+
+                    if (order.status == 'success') {
+                        setShowCheckout(false);
+                        setPayMethod('');
+                        setCart([]);
+                        showNotification('Berhasil melakukan order','success');
+
+                    } else {
+                        showNotification('Gagal melakukan order','error');
+                    }
                 }
 
-                if (item.name === 'Dana') {
+                if (paymentMethodChoose.name === 'Dana') {
                     // Logic here
                 }
 
-                if (item.name  === 'Qris') {
+                if (paymentMethodChoose.name  === 'Qris') {
                     setQrisPayment(true)
                 }
 
-                if(item.name === 'BRI') {
+                if(paymentMethodChoose.name === 'BRI') {
                     // Logic here
                 }
             }
-        })
-    }
 
 
     return (
@@ -333,7 +344,7 @@ export default function Dashboard() {
                             <li>
                                 profile
                             </li>
-                            <li>
+                            <li onClick={() => {window.location.href = '/dashboard/mycart/1'}}>
                                 my order
                             </li>
                             <li>

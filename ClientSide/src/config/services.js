@@ -12,12 +12,18 @@ export const Login = async (data) => {
 }
 
 export const PostOrder = async (data) => {
-    return (await axios.post(API_URL + '/order/post',data,
-        {
-            headers : {
-                Authorization : `Bearer ${GetCookie('auth_token')}`
+    try {
+
+        return (await axios.post(API_URL + '/order/post',data,
+            {
+                headers : {
+                    Authorization : `Bearer ${GetCookie('auth_token')}`
+                }
             }
-        }
-    )).data;
+        )).data;
+    } catch (error) {
+        console.log(error.response.data)
+        return error.response.data
+    }
 }
 

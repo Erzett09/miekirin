@@ -1,0 +1,30 @@
+.sidebar {
+    width: 250px;
+    background: #1e293b;
+    color: white;
+    transition: 0.3s;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.sidebar.closed {
+    width: 0;
+    padding: 0;
+}
+
+.sidebar h2 {
+    margin-bottom: 30px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    padding: 15px 0;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    color: #38bdf8;
+}

@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
-    protected $fillable = [];
+    protected $guarded = [];    
 
 
 public function order() {
-        return $this->belongsToMany(Order::class,'order_id');
+        return $this->belongsTo(Order::class,'order_id');
     }
 
     public function product() {
-        return $this->belongsToMany(Product::class,'product_id');
+        return $this->belongsTo(Product::class,'product_id');
     }
 
 }

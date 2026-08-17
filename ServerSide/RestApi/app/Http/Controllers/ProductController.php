@@ -26,7 +26,7 @@ class ProductController extends Controller
         $items = $request->input('items');
 
         $order = new Order();
-        $order->payment($userId,$items);
+        $order = $order->payment($userId,$items);
 
         return response()->json([
             'status' => 'success',

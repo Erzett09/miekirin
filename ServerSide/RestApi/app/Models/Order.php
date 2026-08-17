@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+
+    protected $guarded = [];
+
     public function user() {
         return $this->belongsTo(User::class,'user_id');
     }
@@ -25,22 +28,18 @@ class Order extends Model
 
             OrderDetails::create([
                 'order_id' => $order->id,
-                'name' => $item['name'],
-                'qty' => $item['qty'],
+                'name' => $item['product_name'],
+                'qty' => $item['product_quantity'],
                 'level' => 1,
-                'description' => $item['description'],
+                'description' => $item['product_description'],
                 ]);
-            }
 
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item['product_id'],
-                'quantity' => $item['qty'],
-                'price' => $item['price'],
-            ]);
-        // DB::insert('orders',[
-        //     'user_id' => $idUser,
-        //     'code' => 'MKI-'.random_int(1000,9999),
-        // ]);
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['product_quantity'],
+                    'price' => $item['product_price'],
+                    ]);
+            } return $order;
     }
 }
